@@ -18,6 +18,7 @@ long long int lststp=0;
 
 float anglsetp=0.0; //Angle Set Point
 float posdeg=0.0;
+float anglediff=0;
 
 
 String inputString = "";         // a string to hold incoming data
@@ -43,46 +44,54 @@ void setup() {
   inputString.reserve(200);
 
     Wire.begin();        // join i2c bus (address optional for master)
+
+  delay(2000);
+
+  Wire.beginTransmission (8);
+        Wire.write (slvmsg);
+        slvmsg=0;
+        Wire.endTransmission ();   
+        delay(500); 
+        Serial.println("Zero Set CMD Issued");
   
 }
 
+
+
+void GetData();
+
+
+
 // the loop function runs over and over again forever
 void loop() {
- Wire.requestFrom(8, 6);    // request 3 bytes from slave device #8
 
-//gathers data comming from slave
-int i=0; //counter for each bite as it arrives
-  while (Wire.available()) { 
-    t[i] = Wire.read(); // every character that arrives it put in order in the empty array "t"
-    i=i+1;
-  }
-  int16_t x=atoi(t);
-  oldpos=pos;
-  pos=x;
-  posdeg=pos*360.0/1000.0/4.0/20.0;
- if (pos != oldpos){
+  GetData();
 
-  //  Serial.print("\nt: ");
-   // Serial.print(t);
 
-    Serial.print("\nCurrent Position: ");
-    Serial.println(posdeg);   //shows the current position
-  }
 
-/*
 
-    float anglediff=anglsetp-posdeg;
+   
     runupdst=abs(anglediff*20/0.9);
     if (abs(anglediff)-runupdst*0.9/20>0.5) runupdst++;
+
+dly=8000;
+   
+  if (anglediff>0.0){
     
-  if (anglediff>0){
+ 
     digitalWrite(DIR, HIGH);
+    
+   
   }
-  else{
+  else if (anglediff<0.0){
+    
     digitalWrite(DIR, LOW);
+
+
+       
   }
     
-    dly=6000;
+   
     int runuptrg=runupdst;
     while (runupdst>0){
       
@@ -99,9 +108,38 @@ int i=0; //counter for each bite as it arrives
        runupdst--;
     }
 
-*/
+ GetData();
+  
+while (abs(anglediff)<0.25 && !(abs(anglediff)<0.05)){
+     
 
 
+      if (anglediff>0.05){
+          
+       
+          digitalWrite(DIR, HIGH);
+          
+          digitalWrite(PUL, LOW);
+             delayMicroseconds(dly);  
+             digitalWrite(PUL, HIGH);
+             delayMicroseconds(3);
+             digitalWrite(PUL, LOW);
+        }
+        else if (anglediff<-0.05){
+          
+          digitalWrite(DIR, LOW);
+      
+             digitalWrite(PUL, LOW);
+             delayMicroseconds(dly);  
+             digitalWrite(PUL, HIGH);
+             delayMicroseconds(3);
+             digitalWrite(PUL, LOW);
+      
+             
+        }
+        delay(500);
+GetData();
+}
 
 
   
@@ -151,6 +189,7 @@ int i=0; //counter for each bite as it arrives
  time loop() runs, so using delay inside loop can delay
  response.  Multiple bytes of data may be available.
  */
+ 
 void serialEvent() {
   while (Serial.available()) {
     // get the new byte:
@@ -165,4 +204,30 @@ void serialEvent() {
   }
 }
 
+
+
+void GetData(){
+  
+ Wire.requestFrom(8, 6);    // request 3 bytes from slave device #8
+
+//gathers data comming from slave
+int i=0; //counter for each bite as it arrives
+  while (Wire.available()) { 
+    t[i] = Wire.read(); // every character that arrives it put in order in the empty array "t"
+    i=i+1;
+  }
+  int16_t x=atoi(t);
+  oldpos=pos;
+  pos=x;
+  posdeg=pos*360.0/1000.0/4.0/20.0;
+ if (pos != oldpos){
+
+  //  Serial.print("\nt: ");
+   // Serial.print(t);
+
+    Serial.print("\nCurrent Position: ");
+    Serial.println(posdeg);   //shows the current position
+  }
+   anglediff=anglsetp-posdeg;
+}
 
