@@ -60,12 +60,15 @@ void loop() {
   if (tmp != encoder0Pos) {
     deg=encoder0Pos*360.0/1000.0/4.0/20.0;
     degint=100*deg;
-    Serial.println(deg);
+    Serial.print(encoder0Pos);
     tmp = encoder0Pos;
+    Serial.print(" : ");
+    Serial.println(t);
   }
   delay(100);
    uint16_t x = encoder0Pos;//(millis()%1000000)/100; //generate a uint16_t number
   dtostrf(x, 6, 0, t); //converts the float or integer to a string. (floatVar, minStringWidthIncDecimalPoint, numVarsAfterDecimal, empty array);
+
 }
 
 

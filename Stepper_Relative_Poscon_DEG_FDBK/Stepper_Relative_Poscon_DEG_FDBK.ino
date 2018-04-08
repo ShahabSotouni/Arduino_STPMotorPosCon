@@ -56,16 +56,20 @@ int i=0; //counter for each bite as it arrives
     t[i] = Wire.read(); // every character that arrives it put in order in the empty array "t"
     i=i+1;
   }
-  uint16_t x=atoi(t);
+  int16_t x=atoi(t);
   oldpos=pos;
-  pos=x-65535-1;
+  pos=x;
   posdeg=pos*360.0/1000.0/4.0/20.0;
-  if (pos != oldpos){
+ if (pos != oldpos){
+
+  //  Serial.print("\nt: ");
+   // Serial.print(t);
+
     Serial.print("\nCurrent Position: ");
     Serial.println(posdeg);   //shows the current position
   }
 
-
+/*
 
     float anglediff=anglsetp-posdeg;
     runupdst=abs(anglediff*20/0.9);
@@ -95,7 +99,7 @@ int i=0; //counter for each bite as it arrives
        runupdst--;
     }
 
-
+*/
 
 
 
