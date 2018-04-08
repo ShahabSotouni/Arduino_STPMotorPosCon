@@ -108,6 +108,7 @@ dly=8000;
        runupdst--;
     }
 
+ delay(1000);
  GetData();
   
 while (abs(anglediff)<0.25 && !(abs(anglediff)<0.05)){
@@ -137,7 +138,7 @@ while (abs(anglediff)<0.25 && !(abs(anglediff)<0.05)){
       
              
         }
-        delay(500);
+        delay(1000);
 GetData();
 }
 
@@ -150,8 +151,8 @@ GetData();
     Serial.print(DIRIN);
     Serial.print(" , ");
     isGoodCmd=true;
-    if( DIRIN=='P'){  Serial.print("Positive CMD Recognized , ");DIRVAL=HIGH;}
-    else if ( DIRIN=='N') {Serial.print("Negative CMD Recognized , "); DIRVAL=LOW;}
+    if( DIRIN=='+'){  Serial.print("Positive CMD Recognized , ");DIRVAL=HIGH;}
+    else if ( DIRIN=='-') {Serial.print("Negative CMD Recognized , "); DIRVAL=LOW;}
     else isGoodCmd=false;
     if( DIRIN=='Z')
       {  
@@ -209,7 +210,7 @@ void serialEvent() {
 void GetData(){
   
  Wire.requestFrom(8, 6);    // request 3 bytes from slave device #8
-
+delay(10);
 //gathers data comming from slave
 int i=0; //counter for each bite as it arrives
   while (Wire.available()) { 
