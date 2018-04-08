@@ -1,6 +1,12 @@
 #include <Wire.h>
+
 #define encoder0PinA 2
 #define encoder0PinB 3
+
+
+char t[7]; //empty array where to put the numbers going to the master
+volatile int Val; // variable used by the master to sent data to the slave
+
 volatile  int encoder0Pos = 0;
 unsigned int tmp = 0;
 unsigned int Aold = 0;
@@ -27,6 +33,9 @@ void blinkled()
 }
 
 
+
+
+
 void setup() {
   pinMode(encoder0PinA, INPUT);
   pinMode(encoder0PinB, INPUT);
@@ -36,9 +45,15 @@ void setup() {
   attachInterrupt(1, doEncoderB, CHANGE);
   // set up the Serial Connection
   Serial.begin (115200);
-  Wire.begin(0x38);             // i2c in slave mode address is 0x38
-  Wire.onRequest(requestEvent);
+ Wire.begin(8);                // Slave id #8
+  Wire.onRequest(requestEvent); // fucntion to run when asking for data
+  Wire.onReceive(receiveEvent); // what to do when receiving data
 }
+
+
+
+
+
 
 void loop() {
   //Check each changes in position
@@ -49,12 +64,22 @@ void loop() {
     tmp = encoder0Pos;
   }
   delay(100);
+   uint16_t x = encoder0Pos;//(millis()%1000000)/100; //generate a uint16_t number
+  dtostrf(x, 6, 0, t); //converts the float or integer to a string. (floatVar, minStringWidthIncDecimalPoint, numVarsAfterDecimal, empty array);
 }
+
+
+
+
 // Interrupt on A changing state
 void doEncoderA() {
   Bnew^Aold ? encoder0Pos++ : encoder0Pos--;
   Aold = digitalRead(encoder0PinA);
 }
+
+
+
+
 
 // Interrupt on B changing state
 void doEncoderB() {
@@ -62,17 +87,26 @@ void doEncoderB() {
   Bnew^Aold ? encoder0Pos++ : encoder0Pos--;
 }
 
-void requestEvent()
-{
-  byte sendhi = 0, sendli = 0;
-  byte sendbyte[3];
-  int16_t tempreading_deg;
-  tempreading_deg=degint;
-  sendhi=tempreading_deg>>8;
-  sendli=tempreading_deg&0xff;
-  sendbyte[0]=sendhi;
-  sendbyte[1]=sendli;
-  sendbyte[2]=(sendhi+sendli)&0xff;
-  Wire.write(sendbyte,3); 
-  blinkled();
+
+
+
+// function: what to do when asked for data
+void requestEvent() {
+Wire.write(t); 
 }
+
+
+
+
+
+// what to do when receiving data from master
+void receiveEvent(int howMany)
+{Val = Wire.read();
+if (Val==2) {
+  encoder0Pos=0;
+  Serial.println("Reset Command Recieved");
+  }
+  Val=0;
+}
+
+
