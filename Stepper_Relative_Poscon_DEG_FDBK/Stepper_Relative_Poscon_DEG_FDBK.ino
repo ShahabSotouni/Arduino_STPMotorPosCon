@@ -223,7 +223,7 @@ int i=0; //counter for each bite as it arrives
   posdeg=pos*360.0/1000.0/4.0/20.0;
  if (pos != oldpos){
 
-  //  Serial.print("\nt: ");
+   // Serial.print("\nt: ");
    // Serial.print(t);
 
     Serial.print("\nCurrent Position: ");
