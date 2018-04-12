@@ -108,7 +108,7 @@ dly=8000;
        runupdst--;
     }
 
- delay(1000);
+ delay(1500);
  GetData();
   
 while (abs(anglediff)<0.25 && !(abs(anglediff)<0.05)){
@@ -138,7 +138,7 @@ while (abs(anglediff)<0.25 && !(abs(anglediff)<0.05)){
       
              
         }
-        delay(1000);
+        delay(1500);
 GetData();
 }
 
@@ -201,6 +201,7 @@ void serialEvent() {
     // so the main loop can do something about it:
     if (inChar == '\n') {
       stringComplete = true;
+      Serial.print("\n");
     }
   }
 }
@@ -221,7 +222,8 @@ int i=0; //counter for each bite as it arrives
   oldpos=pos;
   pos=x;
   posdeg=pos*360.0/1000.0/4.0/20.0;
- if (pos != oldpos){
+  anglediff=anglsetp-posdeg;
+ if (abs(pos-oldpos)>0){
 
    // Serial.print("\nt: ");
    // Serial.print(t);
@@ -229,6 +231,6 @@ int i=0; //counter for each bite as it arrives
     Serial.print("\nCurrent Position: ");
     Serial.println(posdeg);   //shows the current position
   }
-   anglediff=anglsetp-posdeg;
+   
 }
 
