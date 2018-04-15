@@ -60,35 +60,21 @@ void setup() {
 
 void GetData();
 
-
-
 // the loop function runs over and over again forever
 void loop() {
 
   GetData();
 
-
-
-
-   
     runupdst=abs(anglediff*20/0.9);
     if (abs(anglediff)-runupdst*0.9/20>0.5) runupdst++;
 
 dly=8000;
    
   if (anglediff>0.0){
-    
- 
-    digitalWrite(DIR, HIGH);
-    
-   
+    digitalWrite(DIR, HIGH); 
   }
   else if (anglediff<0.0){
-    
-    digitalWrite(DIR, LOW);
-
-
-       
+    digitalWrite(DIR, LOW);      
   }
     
    
@@ -112,24 +98,17 @@ dly=8000;
  GetData();
   
 while (abs(anglediff)<0.25 && !(abs(anglediff)<0.05)){
-     
-
 
       if (anglediff>0.05){
-          
-       
-          digitalWrite(DIR, HIGH);
-          
-          digitalWrite(PUL, LOW);
+             digitalWrite(DIR, HIGH);
+             digitalWrite(PUL, LOW);
              delayMicroseconds(dly);  
              digitalWrite(PUL, HIGH);
              delayMicroseconds(3);
              digitalWrite(PUL, LOW);
         }
         else if (anglediff<-0.05){
-          
-          digitalWrite(DIR, LOW);
-      
+             digitalWrite(DIR, LOW);
              digitalWrite(PUL, LOW);
              delayMicroseconds(dly);  
              digitalWrite(PUL, HIGH);
@@ -142,8 +121,6 @@ while (abs(anglediff)<0.25 && !(abs(anglediff)<0.05)){
 GetData();
 }
 
-
-  
 
   if (stringComplete) {
     

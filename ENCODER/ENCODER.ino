@@ -18,7 +18,6 @@ unsigned int Bnew = 0;
 double deg;
 int degint=12345;
 
-
 byte flag = 0;
 
 //Blink LED
@@ -36,10 +35,6 @@ void blinkled()
   }
 }
 
-
-
-
-
 void setup() {
   pinMode(encoder0PinA, INPUT);
   pinMode(encoder0PinB, INPUT);
@@ -54,10 +49,6 @@ void setup() {
   Wire.onReceive(receiveEvent); // what to do when receiving data
    RMSF.SetWindowSize(24);
 }
-
-
-
-
 
 
 void loop() {
@@ -79,18 +70,12 @@ void loop() {
 
 }
 
-
-
-
 // Interrupt on A changing state
 void doEncoderA() {
   Bnew^Aold ? encoder0Pos++ : encoder0Pos--;
   Aold = digitalRead(encoder0PinA);
      RMSF.PushRMS(encoder0Pos);
 }
-
-
-
 
 
 // Interrupt on B changing state
@@ -101,15 +86,10 @@ void doEncoderB() {
 }
 
 
-
-
 // function: what to do when asked for data
 void requestEvent() {
 Wire.write(t); 
 }
-
-
-
 
 
 // what to do when receiving data from master
