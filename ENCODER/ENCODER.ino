@@ -1,11 +1,11 @@
 #include <Wire.h>
-#include "RMSFilter.h"
+//#include "RMSFilter.h"
 
 #define encoder0PinA 2
 #define encoder0PinB 3
 
 
-RMSFilter RMSF;
+//RMSFilter RMSF;
 
 char t[7]; //empty array where to put the numbers going to the master
 volatile int Val; // variable used by the master to sent data to the slave
@@ -47,7 +47,7 @@ void setup() {
  Wire.begin(8);                // Slave id #8
   Wire.onRequest(requestEvent); // fucntion to run when asking for data
   Wire.onReceive(receiveEvent); // what to do when receiving data
-   RMSF.SetWindowSize(24);
+//   RMSF.SetWindowSize(24);
 }
 
 
@@ -55,17 +55,17 @@ void loop() {
   //Check each changes in position
 
    encoder0PosFltr=RMSF.GetRMS();
-   if (encoder0Pos<0.0) encoder0PosFltr*=-1;
-  if (tmp != encoder0PosFltr) {
-    deg=encoder0PosFltr*360.0/1000.0/4.0/20.0;
+   //if (encoder0Pos<0.0) encoder0PosFltr*=-1;
+  if (tmp != encoder0Pos) {
+    deg=encoder0Pos*360.0/1000.0/4.0/20.0;
     degint=100*deg;
     Serial.print(deg);
-    tmp = encoder0PosFltr;
+    tmp = encoder0Pos;
     Serial.print(" \n ");
   //  Serial.println(t);
   }
   delay(100);
-   uint16_t x = encoder0PosFltr;//(millis()%1000000)/100; //generate a uint16_t number
+   uint16_t x = encoder0Pos;//(millis()%1000000)/100; //generate a uint16_t number
   dtostrf(x, 6, 0, t); //converts the float or integer to a string. (floatVar, minStringWidthIncDecimalPoint, numVarsAfterDecimal, empty array);
 
 }
@@ -74,7 +74,7 @@ void loop() {
 void doEncoderA() {
   Bnew^Aold ? encoder0Pos++ : encoder0Pos--;
   Aold = digitalRead(encoder0PinA);
-     RMSF.PushRMS(encoder0Pos);
+     //RMSF.PushRMS(encoder0Pos);
 }
 
 
@@ -82,7 +82,7 @@ void doEncoderA() {
 void doEncoderB() {
   Bnew = digitalRead(encoder0PinB);
   Bnew^Aold ? encoder0Pos++ : encoder0Pos--;
-     RMSF.PushRMS(encoder0Pos);
+     //RMSF.PushRMS(encoder0Pos);
 }
 
 
@@ -97,9 +97,9 @@ void receiveEvent(int howMany)
 {Val = Wire.read();
 if (Val==2) {
   encoder0Pos=0;
-    for (int i=0;i<24;i++){
+/*    for (int i=0;i<24;i++){
       RMSF.PushRMS(encoder0Pos);
-    }
+    }*/
   Serial.println("Reset Command Recieved");
   }
   Val=0;
