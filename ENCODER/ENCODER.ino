@@ -9,7 +9,6 @@
 
 char t[7]; //empty array where to put the numbers going to the master
 volatile int Val; // variable used by the master to sent data to the slave
-
 volatile  int encoder0Pos = 0;
 volatile  double encoder0PosFltr = 0.0; //Filtered Encoder Position
 volatile  double tmp = 0;
@@ -44,6 +43,7 @@ void setup() {
   attachInterrupt(1, doEncoderB, CHANGE);
   // set up the Serial Connection
   Serial.begin (115200);
+  Serial.println("Start");
  Wire.begin(8);                // Slave id #8
   Wire.onRequest(requestEvent); // fucntion to run when asking for data
   Wire.onReceive(receiveEvent); // what to do when receiving data
@@ -54,7 +54,7 @@ void setup() {
 void loop() {
   //Check each changes in position
 
-   encoder0PosFltr=RMSF.GetRMS();
+//   encoder0PosFltr=RMSF.GetRMS();
    //if (encoder0Pos<0.0) encoder0PosFltr*=-1;
   if (tmp != encoder0Pos) {
     deg=encoder0Pos*360.0/1000.0/4.0/20.0;
@@ -74,6 +74,7 @@ void loop() {
 void doEncoderA() {
   Bnew^Aold ? encoder0Pos++ : encoder0Pos--;
   Aold = digitalRead(encoder0PinA);
+  
      //RMSF.PushRMS(encoder0Pos);
 }
 
