@@ -67,20 +67,20 @@ void setup() {
         Wire.endTransmission ();   
         delay(500); 
 
-serial.println("DANA Alphamechanism! :D")
-serial.println("Command List:")
-serial.println("\"A\": Switch to alphamechanism mode.")
-serial.println("\"P\": Switch to pitch oscillation mode.")
-serial.println("\"Y\": YES, Confirm mode switch command.")
-serial.println("\"N\": NO, Reject mode switch command.")
-serial.println("\"Z\": ZERO, Set zero reference(for alpha mechanism mode).")
-serial.println("\"+xx.xx\": set positive target (degrees for alpha , Hz for frequency).")
-serial.println("\"-xx.xx\": set negative target (degrees for alpha , Hz for frequency).")
-serial.println("Example: \"+1.23\"")
-serial.println("NOTE: Negative frequency command will be treated as positive.");
-serial.println("NOTE: Device allways starts in alphamechanism mode for safety.");
-serial.println("________________________________________________________________________");
-
+Serial.println("DANA Alphamechanism! :D")
+Serial.println("Command List:")
+Serial.println("\"A\": Switch to alphamechanism mode.")
+Serial.println("\"P\": Switch to pitch oscillation mode.")
+Serial.println("\"Y\": YES, Confirm mode switch command.")
+Serial.println("\"N\": NO, Reject mode switch command.")
+Serial.println("\"Z\": ZERO, Set zero reference(for alpha mechanism mode).")
+Serial.println("\"+xx.xx\": set positive target (degrees for alpha , Hz for frequency).")
+Serial.println("\"-xx.xx\": set negative target (degrees for alpha , Hz for frequency).")
+Serial.println("Example: \"+1.23\"")
+Serial.println("NOTE: Negative frequency command will be treated as positive.");
+Serial.println("NOTE: Device allways starts in alphamechanism mode for safety.");
+Serial.println("________________________________________________________________________");
+  
         
         Serial.println("Zero Set CMD Issued");
   
